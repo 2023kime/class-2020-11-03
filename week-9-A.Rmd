@@ -33,6 +33,7 @@ week_9 <- kenya %>%
   droplevels() %>% 
   select(reg_chg, treatment, poverty, 
          distance, pop_density)
+week_9
 ```
 
 
@@ -52,7 +53,40 @@ week_9 <- kenya %>%
 
 ```{r Q1}
 
+# This is a predictive model, where both poverty and distance are variables that
+# have not been "treated" or "controlled" by the experiment. This means that 
+# no one variable here causes the other, even though there is a seemingly positive 
+# correlation between greater distance from a polling station and poverty rate.
+
+# There is only one observation beyond the 90 km line, so the model is not 
+# very accurate. The whole linear model is pulled out by this observation.
+
+# Along the linear model line, the difference in poverty rates between a place
+# that is 50 km further from a poll than another is about 8 percentage points 
+# (0.08), or the slope of the model.
+
+ggplot(week_9, aes(distance, poverty)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+# The linear model relating poverty to distance:
+# poverty = intercept + coefficient * distance + sigma
+
+stan_glm(formula = poverty ~ distance,
+         data = week_9,
+         refresh = 0) %>%
+print(digits = 4)
+
+# The Intercept parameter shows that the median of this dataset has a y-intercept
+# of around 40%. This means that when the location is 0 km away from a polling
+# station (it has a polling station right next to it), the median poverty rate
+# is already starting at around 40%.
+# The second parameter is supposed to show the median effect as distance increases
+# by 1 km on poverty rates, but it is very small at a median of 0.18%. This means
+# that the distance has a very small positive effect on poverty.
+
 ```
+$$ poverty_i = \beta_0 + \beta_1 distance_{i} + \epsilon_i$$
 
 
 ## Scene 2
@@ -63,6 +97,29 @@ week_9 <- kenya %>%
 
 * Estimate the model. Assign the fitted model to `fit_2`. Interpret the important parameters of the model.
 
+```{r}
 
+fit_2 <- stan_glm(formula = reg_chg ~ treatment + poverty + distance + pop_density,
+         data = week_9,
+         refresh = 0) %>%
+  print(digits = 6)
 
+# The intercept is the change in registration when all of the other variables/
+# parameters are set to 0. This means treatment is control, poverty rate is 0, 
+# distance from a polling station is 0 km, and population density is relatively
+# 0, very low density? This median value is a small negative number, - 3.4 %. 
+# Registration drops when these variables are all set to 0.
+
+# On median, treating people has a more positive effect on change in registration
+# than the (negative) effect of controlling this variable.
+# Poverty shows a slight positive slope for changes in registration as the 
+# poverty rate increases one unit.
+# Distance shows a slight negative slope for changes in registration as the 
+# distance from a polling station increases one km.
+# pop_density shows a larger negative slope for changes in registration
+# as the population density increases.
+
+```
+
+$$ regchange_i = \beta_0 + \beta_1 treatment_{i} + \beta_2 poverty_{i} + \beta_3 distance_{i} + \beta_4 popdensity_{i} + \epsilon_i$$
 
