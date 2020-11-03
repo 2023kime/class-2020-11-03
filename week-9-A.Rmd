@@ -50,6 +50,9 @@ week_9 <- kenya %>%
   
 * Fit a `stan_glm()` model which relates poverty to distance. Print a summary. (Hint: In order to see the coefficient of `distance`, you will probably need to use the `digits` argument to `print()`.) Interpret the meaning of the two important parameters.  
 
+```{r Q1}
+
+```
 
 
 ## Scene 2
