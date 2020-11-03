@@ -46,9 +46,9 @@ week_9 <- kenya %>%
   + How accurate is the model beyond 90 kilometers?  
   + Eye-balling the chart, how different is the poverty rate between two polling stations whose distance differs by 50 kilometers?
   
+* Create a linear model which relates poverty to distance. This is similar to the models we created last week which related age to party. See the discussion in Chapter 9 for advice.  Write down the math. 
+  
 * Fit a `stan_glm()` model which relates poverty to distance. Print a summary. (Hint: In order to see the coefficient of `distance`, you will probably need to use the `digits` argument to `print()`.) Interpret the meaning of the two important parameters.  
-
-
 
 
 
@@ -59,18 +59,6 @@ week_9 <- kenya %>%
 * Provide the math for this model.
 
 * Estimate the model. Assign the fitted model to `fit_2`. Interpret the important parameters of the model.
-
-
-
-## Scene 3
-
-**Prompt:** Let's consider a different model. First, create a new variable, `poverty_n`, which is just `poverty` minus the mean of `poverty` then divided by the standard deviation of `poverty`. The "n" is for "normalization."  Second, consider `reg_chg` as a function of `treatment`, `poverty_n` and the interaction between the two.
-
-* Fit the  model and interpret the coefficients. Focus on the coefficient of the interaction term.
-
-* Create a graphic of the posterior probability distribution of the causal effect of `local` treatment in polling stations which have +2 sigma poverty rates. Note that there are two ways to do this. First, we can use a parameter approach. This is what we did in class last week. Second, we can use `posterior_epred()`, which if generally easier since it does the math for us. Confirm that the two approaches give the same answer.
-
-
 
 
 
